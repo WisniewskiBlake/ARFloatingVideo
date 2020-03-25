@@ -24,9 +24,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ExternalTexture texture = new ExternalTexture();
+        ExternalTexture eTexture = new ExternalTexture();
         MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.video);
-        mediaPlayer.setSurface(texture.getSurface());
+        mediaPlayer.setSurface(eTexture.getSurface());
         mediaPlayer.setLooping(true);
 
         ModelRenderable.builder()
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
                 .build()
                 .thenAccept(modelRenderable -> {
                     videoRenderable = modelRenderable;
-                    videoRenderable.getMaterial().setExternalTexture("videoTexture", texture);
+                    videoRenderable.getMaterial().setExternalTexture("videoTexture", eTexture);
                     videoRenderable.getMaterial().setFloat4("keyColor", new Color(0.01843f, 1.0f,0.098f));
 
                 });
@@ -47,9 +47,9 @@ public class MainActivity extends AppCompatActivity {
             if(!mediaPlayer.isPlaying()){
                 mediaPlayer.start();
 
-                texture.getSurfaceTexture().setOnFrameAvailableListener(surfaceTexture -> {
+                eTexture.getSurfaceTexture().setOnFrameAvailableListener(surfaceTexture -> {
                     anchorNode.setRenderable(videoRenderable);
-                    texture.getSurfaceTexture().setOnFrameAvailableListener(null);
+                    eTexture.getSurfaceTexture().setOnFrameAvailableListener(null);
                 });
             }else{
                 anchorNode.setRenderable(videoRenderable);
